@@ -24,12 +24,12 @@ public class Race {
          arrynmanuf=new String[numOfdrivers];
          arryaccel=new double[segments];
          arryspeed=new double[segments];
-         numOfRace++;
+         numOfRace++;//add one of every object that create
     }
 
     public void getRouteFromSysIn(){
         double length;
-        do {
+        do {//input of num of segmants
             System.out.println("How many segments does the route contain ?");
             this.segments = scanner.nextInt();
             if(this.segments<=0){
@@ -38,7 +38,7 @@ public class Race {
         }while(this.segments<=0);
          this.arrLength=new double[segments];
         for(int i=0;i<segments;i++){
-            do{
+            do{//enter the length of every segments
                 System.out.println("What is the length of segment"+i+" ?");
                 length=scanner.nextDouble();
                 if(length<=0)
@@ -50,7 +50,7 @@ public class Race {
     }
 
     public void getDriversAndCarsFromSysIn(){
-        do {
+        do {//input the numbers of participants
             System.out.println("How many participants are there in the race ?");
             this.numOfdrivers = scanner.nextInt();
             if(this.numOfdrivers<=0){
@@ -61,7 +61,7 @@ public class Race {
       this.arryname= new String[this.numOfdrivers];
          this.arrybreak=new double[this.numOfdrivers];
          this.arrydelay=new double[this.numOfdrivers];
-        for(int i=0;i<this.numOfdrivers;i++){
+        for(int i=0;i<this.numOfdrivers;i++){//input the details of every driver
             System.out.println("Please enter details for driver "+i);
             System.out.println("What is the driver's name?");
             scanner.nextLine();
@@ -77,7 +77,7 @@ public class Race {
         this.arryaccel=new double[this.numOfdrivers];
         this.arryspeed=new double[this.numOfdrivers];
         scanner.nextLine();
-        for(int i=0;i<numOfdrivers;i++){
+        for(int i=0;i<numOfdrivers;i++){//input the details of every car
             System.out.println("Please enter details for car "+i+":");
             System.out.println("What is the car's manufacturer?");
             scanner.nextLine();
@@ -115,11 +115,11 @@ public class Race {
                 timeM[i] += (this.arrLength[j]-distance[i])/this.arryspeed[i];
             }
         }
-        for(int i=0;i<this.numOfdrivers;i++){//the total time
+        for(int i=0;i<this.numOfdrivers;i++){//calculate the total time
             timeTot[i]=this.segments*timeA[i]+this.segments*timeB[i]+timeM[i]+(this.segments-1)*this.arrydelay[i];
         }
         win=timeTot[1];
-        for(int i=0;i<this.numOfdrivers;i++){
+        for(int i=0;i<this.numOfdrivers;i++){//print every driver whit kind of car and how long will is takes
             System.out.println(this.arryname[i]+", "+this.arrynmanuf[i]+", "+timeTot[i]);
             if(timeTot[i]<=win) {
                 win = timeTot[i];
@@ -140,11 +140,11 @@ public class Race {
         double win;
         int indexWin=0;
         Draivers[] arrDC=new Draivers[this.numOfdrivers*this.numOfdrivers];
-        for(int i=0;i<this.numOfdrivers*this.numOfdrivers;i++){
+        for(int i=0;i<this.numOfdrivers*this.numOfdrivers;i++){//initialize the array of driver car
             arrDC[i]=new Draivers();
         }
         int index=0;
-        for(int i=0;i<this.numOfdrivers;i++){
+        for(int i=0;i<this.numOfdrivers;i++){//entering the value to the array driver car
             for(int j=0;j<this.numOfdrivers;j++){
                 arrDC[index].setName(arryname[i]);
                 arrDC[index].setDilay(arrydelay[i]);
@@ -155,33 +155,34 @@ public class Race {
                 index++;
             }
         }
-        for(int i=0;i<this.numOfdrivers*this.numOfdrivers;i++){//the time of acceleration
+        for(int i=0;i<this.numOfdrivers*this.numOfdrivers;i++){//calculate the time of acceleration
             timeA[i]=arrDC[i].getMaxSpeed()/arrDC[i].getAcceleration();
             distance[i]=0.5*arrDC[i].getAcceleration()*timeA[i]*timeA[i];
         }
-        for(int i=0;i<this.numOfdrivers*this.numOfdrivers;i++){//the time of breaking
+        for(int i=0;i<this.numOfdrivers*this.numOfdrivers;i++){//calculate the time of breaking
             timeB[i]=arrDC[i].getMaxSpeed()/arrDC[i].getBreaking();
             distance[i]+=0.5*arrDC[i].getBreaking()*timeB[i]*timeB[i];
         }
         for (int i = 0; i < this.numOfdrivers*this.numOfdrivers; i++) {//restart the array of time max speed
             timeM[i]=0.0;
         }
-        for(int j=0;j<this.segments;j++) {//the time of drive in max speed
+        for(int j=0;j<this.segments;j++) {//calculate the time of drive in max speed
             for (int i = 0; i < this.numOfdrivers*this.numOfdrivers; i++) {
                 timeM[i] += (this.arrLength[j]-distance[i])/arrDC[i].getMaxSpeed();
             }
         }
-        for(int i=0;i<this.numOfdrivers*this.numOfdrivers;i++){//the total time
+        for(int i=0;i<this.numOfdrivers*this.numOfdrivers;i++){//calculate the total time
             timeTot[i]=this.segments*timeA[i]+this.segments*timeB[i]+timeM[i]+(this.segments-1)*arrDC[i].getDilay();
         }
         win=timeTot[1];
-        for(int i=0;i<this.numOfdrivers*this.numOfdrivers;i++){
+        for(int i=0;i<this.numOfdrivers*this.numOfdrivers;i++){//print every driver whit every car
             System.out.println(arrDC[i].getName()+", "+arrDC[i].getmanuf()+", "+timeTot[i]);
             if(timeTot[i]<=win) {
                 win = timeTot[i];
                 indexWin = i;
             }
         }
+        //print the winner driver and car
         System.out.println("The winner is: "+arrDC[indexWin].getName()+" and "+arrDC[indexWin].getmanuf()+", who completed the race iz  "+timeTot[indexWin]+" swconds");
 
 
@@ -192,6 +193,7 @@ public class Race {
     }
 
     public void printTotalInstantiatedRaces() {
+        //print the numbers of kinds of object Race
       System.out.println("The number of constructedn Race instances is "+numOfRace);
     }
 
@@ -205,30 +207,30 @@ public class Race {
         int [] sortarry=new int[numOfdrivers];
         double ferstcar=0;
         int indexWin=0;
-        for(int i=0;i<this.numOfdrivers;i++){//the time of acceleration
+        for(int i=0;i<this.numOfdrivers;i++){//calculate the time of acceleration
             timeA[i]=this.arryspeed[i]/this.arryaccel[i];
             distance[i]=0.5*this.arryaccel[i]*timeA[i]*timeA[i];
         }
-        for(int i=0;i<this.numOfdrivers;i++){//the time of breaking
+        for(int i=0;i<this.numOfdrivers;i++){//calculate the time of breaking
             timeB[i]=this.arryspeed[i]/this.arrybreak[i];
             distance[i]+=0.5*this.arrybreak[i]*timeB[i]*timeB[i];
         }
         for (int i = 0; i < this.numOfdrivers; i++) {//restart the array of time max speed
             timeM[i]=0.0;
         }
-        for(int j=0;j<this.segments;j++) {//the time of drive in max speed
+        for(int j=0;j<this.segments;j++) {//calculate the time of drive in max speed
             for (int i = 0; i < this.numOfdrivers; i++) {
                 timeM[i] += (this.arrLength[j]-distance[i])/this.arryspeed[i];
             }
         }
-        for(int i=0;i<this.numOfdrivers;i++){//the total time
+        for(int i=0;i<this.numOfdrivers;i++){//calculate the total time
             timeTot[i]=this.segments*timeA[i]+this.segments*timeB[i]+timeM[i]+(this.segments-1)*this.arrydelay[i];
         }
 
-        for(int i=0;i<numOfdrivers;i++){
+        for(int i=0;i<numOfdrivers;i++){//copy to temp array the result of total time of every drive whit every car
             tempTimeTot[i]=timeTot[i];
         }
-        for(int i=0;i<numOfdrivers;i++){
+        for(int i=0;i<numOfdrivers;i++){//sort the result of total time
             ferstcar=10000;
             for(int j=0;j<numOfdrivers;j++){
                 if(ferstcar>=tempTimeTot[j]){
@@ -236,11 +238,11 @@ public class Race {
                     indexWin=j;
                 }
             }
-            tempTimeTot[indexWin]=10000000;
-            sortarry[i]=indexWin;
+            tempTimeTot[indexWin]=10000000;//put max integer in the value of total time to every driver
+            sortarry[i]=indexWin;//entering the index of place of driver that arrives first to the last
         }
 
-        for(int i=0;i<this.numOfdrivers;i++){
+        for(int i=0;i<this.numOfdrivers;i++){//prints drivers results first to the last
             System.out.println(this.arryname[sortarry[i]]+", "+this.arrynmanuf[sortarry[i]]+", "+timeTot[sortarry[i]]);
         }
 
